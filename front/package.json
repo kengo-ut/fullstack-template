@@ -7,9 +7,13 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint --dir src/",
-    "fmt": "prettier --write src/"
+    "fmt": "prettier --write src/",
+    "gen": "yarn run orval"
   },
   "dependencies": {
+    "@radix-ui/react-label": "^2.1.2",
+    "@radix-ui/react-slot": "^1.1.2",
+    "axios": "^1.7.9",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "lucide-react": "^0.475.0",
@@ -30,6 +34,7 @@
     "eslint-config-next": "15.1.7",
     "eslint-config-prettier": "^10.0.1",
     "eslint-plugin-react-hooks": "^5.1.0",
+    "orval": "^7.5.0",
     "postcss": "^8",
     "prettier": "^3.5.0",
     "tailwindcss": "^3.4.1",

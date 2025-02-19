@@ -1,57 +1,66 @@
-## Getting Started
-```bash
-yarn install
-yarn dev
-```
+# Fullstack-Template
 
-## Installations
-### Dependencies
-```bash
-yarn add -D @types/node @types/react @types/react-dom prettier eslint-config-prettier eslint-plugin-react-hooks @next/eslint-plugin-next
-```
-### Styling
-```bash
-yarn add react-icons lucide-react
-npx shadcn@latest init -d
-```
+Next.js と FastAPI によるフルスタック開発のためのテンプレートです (Health Status Checker が含まれています)
 
-## Settings
-### ESLint
-- write your rules in `eslint.config.mjs` (if you want)
-### VSCode
-- write below in `.vscode/settings.json`
-```json
-{
-  "npm.packageManager": "yarn",
-  "editor.defaultFormatter": "esbenp.prettier-vscode",
-  "editor.formatOnSave": true,
-  "editor.formatOnPaste": true,
-  "editor.codeActionsOnSave": {
-    "source.addMissingImports": "explicit"
-  },
-  "javascript.preferences.importModuleSpecifier": "non-relative",
-  "typescript.preferences.importModuleSpecifier": "non-relative",
-}
-```
-### Confidentials
-- write confidential information in `.env.local`
+## デモ画像
 
-## Deploy
-- modify `next.config.ts` as below
-```ts
-import type { NextConfig } from "next";
+![demo](/images/health_status_checker.png)
 
-const nextConfig: NextConfig = {
-  /* config options here */
-  output: 'export',
-  images: { unoptimized: true },
-};
+## 環境構築
 
-export default nextConfig;
-```
+### back
 
-## TODO
-- testの実装 (vitest)
-- authの実装
-- deployの実装 (Vercel)
-- CI/CDの実装 (GitHub Actions)
+1. `back/.envrc`ファイルを作成し、必要な環境変数を設定する
+
+2. `back/data/`配下に必要なデータを配置する
+
+3. `back`ディレクトリで以下のコマンドを実行し、依存パッケージをインストールする
+
+   ```bash
+   uv install
+   ```
+
+4. `back`ディレクトリで以下のコマンドを実行し、開発サーバーを立ち上げる
+   ```bash
+   make dev
+   ```
+
+### front
+
+5. `front`で使用する Node.js と Yarn のバージョンを設定する
+
+   ```bash
+   # 初回（package.jsonへ固定）
+   volta pin node@20.15.0
+   volta pin yarn@4.3.1
+
+   # 以降（package.jsonから指定）
+   volta install node
+   volta install yarn
+   ```
+
+6. `front`ディレクトリで以下のコマンドを実行し、依存パッケージをインストールする
+
+   ```bash
+   yarn
+   ```
+
+7. `front`ディレクトリで以下のコマンドを実行し、Schema・API クライアントを生成
+
+   ```bash
+   yarn gen
+   ```
+
+8. `front`ディレクトリで、以下の環境変数ファイル`front/.env.local`を作成する
+
+   ```
+   NEXT_PUBLIC_API_BASE_URL=http://127.0.0.1:8000
+   ```
+
+9. `front`ディレクトリで以下のコマンドを実行し、開発サーバーを立ち上げる
+
+   ```bash
+   yarn dev
+   ```
+
+10. [http://localhost:3000](http://localhost:3000)へアクセスしてページが表示されれば OK
