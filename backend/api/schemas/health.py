@@ -10,8 +10,8 @@ class HealthStatus(BaseModel):
 
 
 class HealthVariables(BaseModel):
-    weight: float = Field(..., description="体重 (kg)")
-    height: float = Field(..., description="身長 (m)")
+    weight: int = Field(..., description="体重 (kg)")
+    height: int = Field(..., description="身長 (cm)")
     systolic_bp: int = Field(..., description="収縮期血圧 (mmHg)")
     diastolic_bp: int = Field(..., description="拡張期血圧 (mmHg)")
     glucose: int = Field(..., description="血糖値 (mg/dL)")
@@ -22,8 +22,8 @@ class HealthVariables(BaseModel):
         "json_schema_extra": {
             "examples": [
                 {
-                    "weight": 70.0,
-                    "height": 1.75,
+                    "weight": 70,
+                    "height": 175,
                     "systolic_bp": 120,
                     "diastolic_bp": 80,
                     "glucose": 90,

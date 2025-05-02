@@ -1,3 +1,3 @@
-from .health import health_service
+from .health import HealthService
 
-__all__ = ["health_service"]
+__all__ = ["HealthService"]

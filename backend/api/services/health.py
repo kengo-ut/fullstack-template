@@ -1,6 +1,8 @@
 from typing import Literal
 
-from api.clients import HealthClient
+from fastapi import HTTPException
+
+from api.protocols import HealthClientProtocol
 from api.schemas import HealthStatus
 
 
@@ -9,8 +11,12 @@ class HealthService:
     健康状態を管理するサービスクラス。
     """
 
-    def __init__(self):
-        self.health_client = HealthClient()
+    def __init__(self, health_client: HealthClientProtocol):
+        """
+        コンストラクタ。
+        :param health_client: HealthClient のインスタンス
+        """
+        self.health_client = health_client
 
     def check_health(
         self,
@@ -32,24 +38,30 @@ class HealthService:
         :param heart_rate: 心拍数 (bpm)
         :return: HealthStatus 型の健康状態
         """
+        try:
+            bmi: float = self.health_client.calc_bmi(weight, height)
 
-        bmi: float = self.health_client.calc_bmi(weight, height)
+            # 健康基準の判定
+            bmi_ok = 18.5 <= bmi <= 24.9
+            bp_ok = systolic_bp <= 120 and diastolic_bp <= 80
+            glucose_ok = 70 <= glucose <= 99
+            heart_rate_ok = 60 <= heart_rate <= 100
 
-        # 健康基準の判定
-        bmi_ok = 18.5 <= bmi <= 24.9
-        bp_ok = systolic_bp <= 120 and diastolic_bp <= 80
-        glucose_ok = 70 <= glucose <= 99
-        heart_rate_ok = 60 <= heart_rate <= 100
+            # 判定ロジック
+            checks = [bmi_ok, bp_ok, glucose_ok, heart_rate_ok]
+            num_abnormal = checks.count(False)
 
-        # 健康状態の判定
-        status: Literal["健康", "注意", "危険"] = "健康"
-        if all([bmi_ok, bp_ok, glucose_ok, heart_rate_ok]):
-            status = "健康"
-        elif any([not bmi_ok, not bp_ok, not glucose_ok, not heart_rate_ok]):
-            status = "注意"
-        else:
-            status = "危険"
-        return HealthStatus(status=status)
+            if num_abnormal == 0:
+                status: Literal["健康", "注意", "危険"] = "健康"
+            elif num_abnormal == 1:
+                status = "注意"
+            else:
+                status = "危険"
 
-
-health_service = HealthService()
+            return HealthStatus(status=status)
+        except ValueError as e:
+            # 例外処理: 不正な値が入力された場合
+            raise HTTPException(  # noqa: B904
+                status_code=422,
+                detail=f"Invalid input: {e!s}",
+            )

@@ -1,12 +1,14 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
+from api.lifespan import lifespan
 from api.routers import health_router
 
 app = FastAPI(
     title="Health API",
     version="1.0.0",
     description="Health API for monitoring health metrics",
+    lifespan=lifespan,
 )
 
 app.add_middleware(

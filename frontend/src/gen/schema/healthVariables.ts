@@ -9,7 +9,7 @@
 export interface HealthVariables {
   /** 体重 (kg) */
   weight: number;
-  /** 身長 (m) */
+  /** 身長 (cm) */
   height: number;
   /** 収縮期血圧 (mmHg) */
   systolic_bp: number;

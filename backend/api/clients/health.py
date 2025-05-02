@@ -6,13 +6,14 @@ class HealthClient:
     def __init__(self):
         pass
 
-    @staticmethod
-    def calc_bmi(weight: float, height: float) -> float:
+    def calc_bmi(self, weight: float, height: float) -> float:
         """
         体重と身長からBMIを計算する。
 
         :param weight: 体重 (kg)
-        :param height: 身長 (m)
+        :param height: 身長 (cm)
         :return: BMI
         """
-        return weight / (height**2)
+        if height <= 0:
+            raise ValueError("Height must be greater than 0")
+        return weight / ((height / 100) ** 2)
