@@ -23,7 +23,7 @@ yarn
 
 ```bash
 cd ../backend
-uv run python openapi.py > openapi.json
+make gen
 cd ../frontend
 yarn gen
 ```

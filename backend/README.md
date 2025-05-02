@@ -23,6 +23,18 @@ export PYTHONPATH=$(pwd)
 make dev
 ```
 
+## Frontendとの連携
+
+- `backend`ディレクトリ配下で以下のコマンドを実行し、Schema・APIクライアントの設定ファイルを生成する
+```bash
+make gen
+```
+
+- `frontend`ディレクトリ配下で以下のコマンドを実行し、Schema・APIクライアントを生成する
+```bash
+yarn gen
+```
+
 ```bash
 # Swagger UIの確認
 # ブラウザで`http://127.0.0.1:8000/docs`にアクセス

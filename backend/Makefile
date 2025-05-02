@@ -9,6 +9,7 @@ help:
 	@echo "  make test          Run tests with pytest"
 	@echo "  make check         Run pre-commit on all files (CI check)"
 	@echo "  make dev           Run the development server with uvicorn"
+	@echo "  make gen           Generate openapi.json file"
 
 setup:
 	uv run pre-commit install
@@ -28,3 +29,6 @@ check:
 
 dev:
 	uv run uvicorn api.main:app --reload
+
+gen:
+	uv run python openapi.py > openapi.json

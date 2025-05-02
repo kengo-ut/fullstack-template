@@ -23,6 +23,12 @@ Next.js と FastAPI によるフルスタック開発のためのテンプレー
    make dev
    ```
 
+4. `backend`ディレクトリで以下のコマンドを実行し、Schema・APIクライアントの設定ファイルを生成する
+
+   ```bash
+   make gen
+   ```
+
 ### frontend
 
 1. `frontend`で使用する Node.js と Yarn をインストールする
