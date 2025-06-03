@@ -1,5 +1,6 @@
 const fs = require("fs");
 const path = require("path");
+const { execSync } = require("child_process");
 
 module.exports = {
   backend: {
@@ -10,16 +11,31 @@ module.exports = {
       clean: true,
     },
     hooks: {
-      // orval の生成後に実行されるフック
       afterAllFilesWrite: () => {
-        const defaultTsPath = path.resolve(__dirname, "src/gen/health/health.ts");
+        const genDir = path.resolve(__dirname, "src/gen");
 
-        if (fs.existsSync(defaultTsPath)) {
-          fs.appendFileSync(
-            defaultTsPath,
-            `axios.defaults.baseURL = process.env.NEXT_PUBLIC_API_BASE_URL;\n`
-          );
-          console.log("✅ axios.defaults.baseURL を health.ts に追加しました！");
+        const subDirs = fs.readdirSync(genDir).filter((name: string) => {
+          const fullPath = path.join(genDir, name);
+          return fs.statSync(fullPath).isDirectory();
+        });
+
+        subDirs.forEach((dirName: string) => {
+          const targetFile = path.join(genDir, dirName, `${dirName}.ts`);
+          if (fs.existsSync(targetFile)) {
+            fs.appendFileSync(
+              targetFile,
+              `\naxios.defaults.baseURL = process.env.NEXT_PUBLIC_API_BASE_URL;\n`
+            );
+            console.log(`✅ axios.defaults.baseURL を ${dirName}.ts に追加しました！`);
+          }
+        });
+
+        try {
+          execSync("npx prettier --write src/gen", { stdio: "inherit" });
+          console.log("✅ Prettier で整形しました！");
+        } catch (err) {
+          console.error("❌ Prettier の整形に失敗しました:", err);
+          throw err;
         }
       },
     },
